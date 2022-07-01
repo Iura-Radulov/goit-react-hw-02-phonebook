@@ -6,21 +6,34 @@ import ContactList from "./ContactList";
 
 export class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+    ],
     filter: '',  
   }
 
   addName = (name, number) => {
-       
+    if (this.state.contacts.find(contact => contact.name === name)) {
+      alert(`${name} is already in contacts`)
+    }       
     const contact = {
       id: nanoid(),
       name,
       number,
     }
     this.setState(({ contacts }) => ({
-      contacts: [contact, ...contacts]
+      contacts: [...contacts, contact]
     }))
   }
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
 
   changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
@@ -35,23 +48,22 @@ export class App extends Component {
     );
   };
 
-
   render() {
     const {  filter} = this.state
     const visibleNames = this.getVisibleNames()
     
     return (
-      <div>
-        <h2>Phonebook</h2>
+      <div className="container">
+        <h2 className="title">Phonebook</h2>
         <ContactForm
           onSubmit={this.addName}          
         />       
         <div>
-          <h2>Contacts</h2>
+          <h2 className="title">Contacts</h2>
           <Filter changeFilter={this.changeFilter}
             filter={filter }/>
-          <ContactList visibleNames={ visibleNames}/>          
-          
+          <ContactList visibleNames={visibleNames}
+            deleteContact={ this.deleteContact}/>          
         </div>
     </div>
   )};

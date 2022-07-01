@@ -1,9 +1,11 @@
+import React from "react"
+import PropTypes from 'prop-types'
 
-const Filter = (props) => {
-    const {filter, changeFilter} = props
+const Filter = ({filter, changeFilter}) => {
+    
     return (
         <>
-        <h3>Find contact by name</h3>
+        <p>Find contact by name</p>
           <input
             type="text"
             name="filter"
@@ -13,4 +15,10 @@ const Filter = (props) => {
          </>
     )
 }
+
+Filter.propTypes = {
+  filter: PropTypes.string.isRequired,
+  changeFilter: PropTypes.func.isRequired
+}
+
 export default Filter
